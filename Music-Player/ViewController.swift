@@ -61,6 +61,8 @@ class ViewController: UIViewController {
         if arrOfMusic[0].isFavorite! {
             favMusicBtn.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         }
+        // To notify the changeLyrics function when textView value changed
+        NotificationCenter.default.addObserver(self, selector: #selector(updateChangedLyricstoArray), name: UITextView.textDidChangeNotification, object: nil)
         
     }
     
@@ -104,7 +106,7 @@ class ViewController: UIViewController {
     @IBAction func pressFave(_ sender: Any) {
         arrOfMusic[currMusic].isFavorite = !arrOfMusic[currMusic].isFavorite!
         changeHeartIcon()
-        print("Status music number \(currMusic) is \(arrOfMusic[currMusic].isFavorite)")
+        print("Status music number \(currMusic) is \(String(describing: arrOfMusic[currMusic].isFavorite) )")
     }
     
     @IBAction func pressResetFaves(_ sender: Any) {
@@ -113,7 +115,9 @@ class ViewController: UIViewController {
         }
         changeHeartIcon()
     }
-    
+    @objc func updateChangedLyricstoArray() {
+        arrOfMusic[currMusic].lyrics = lyricsTextView.text
+    }
     func changeMusic() {
         imageCoverImage.image = arrOfMusic[currMusic].image
         imageBackground.image = arrOfMusic[currMusic].image
